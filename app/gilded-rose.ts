@@ -1,4 +1,5 @@
-import { IStrategy, updateItem } from "./context";
+import { updateItem } from "./context";
+import { IStrategy } from "./interfaces/strategy-interface";
 
 export class Item {
   name: string;
