@@ -5,11 +5,6 @@ import { Default } from "./stategies/DefaultStrategy";
 
 import { Item } from "./gilded-rose";
 
-export interface IStrategy {
-  updateQuality(): any;
-  updateSellIn(): any;
-}
-
 enum ItemNames {
   AgedBrie = "Aged Brie",
   Sulfuras = "Sulfuras, Hand of Ragnaros",
