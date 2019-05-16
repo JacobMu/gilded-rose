@@ -14,7 +14,7 @@ describe("Gilded Rose", function() {
   });
 
   describe("# functionality", () => {
-    it("should foo", function() {
+    it("should return Foo item ", function() {
       const gildedRose = new GildedRose([new Item("foo", 0, 0)]);
 
       const items = gildedRose.updateQuality();
