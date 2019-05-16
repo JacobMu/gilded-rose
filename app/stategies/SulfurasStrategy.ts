@@ -1,4 +1,4 @@
-import { IStrategy } from "../context";
+import { IStrategy } from "../interfaces/strategy-interface";
 
 export class Sulfuras implements IStrategy {
   sellIn: number;

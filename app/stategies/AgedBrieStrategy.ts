@@ -1,7 +1,5 @@
-import { IStrategy } from "../context";
-
-const MAX_QUALITY = 50;
-const LAST_DATE = 0;
+import { IStrategy } from "../interfaces/strategy-interface";
+import { MAX_QUALITY, LAST_DATE, INCREASE, DECREASE } from "../constants";
 
 export class AgedBrie implements IStrategy {
   sellIn: number;
@@ -13,18 +11,21 @@ export class AgedBrie implements IStrategy {
   }
 
   updateQuality() {
-    if (this.quality >= MAX_QUALITY) {
-      return this.quality;
+    if (this.quality <= MAX_QUALITY) {
+      return getUpdatedQuality(this.sellIn, this.quality);
     }
-
-    if (this.sellIn >= LAST_DATE) {
-      return this.quality + 1;
-    }
-
-    return this.quality + 2;
+    return this.quality;
   }
 
   updateSellIn() {
-    return this.sellIn - 1;
+    return this.sellIn - DECREASE.BY_ONE;
   }
+}
+
+function getUpdatedQuality(sellIn: number, quality: number): number {
+  if (sellIn >= LAST_DATE) {
+    return quality + INCREASE.BY_ONE;
+  }
+
+  return quality + INCREASE.BY_TWO;
 }
