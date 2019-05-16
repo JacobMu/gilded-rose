@@ -1,4 +1,5 @@
-import { IStrategy } from "../context";
+import { IStrategy } from "../interfaces/strategy-interface";
+import { ZERO_QUALITY, DECREASE } from "../constants";
 
 export class Default implements IStrategy {
   sellIn: number;
@@ -10,13 +11,17 @@ export class Default implements IStrategy {
   }
 
   updateQuality() {
-    if (this.sellIn <= 0) {
-      return this.quality - 2;
+    if (this.quality <= ZERO_QUALITY) {
+      return ZERO_QUALITY;
     }
-    return this.quality - 1;
+    
+    if (this.sellIn <= 0) {
+      return this.quality - DECREASE.BY_TWO;
+    }
+    return this.quality - DECREASE.BY_ONE;
   }
 
   updateSellIn() {
-    return this.sellIn - 1;
+    return this.sellIn - DECREASE.BY_ONE;
   }
 }
