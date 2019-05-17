@@ -1,34 +1,40 @@
-import { IStrategy } from "../interfaces/strategy-interface";
-import { LAST_DATE, INCREASE, DECREASE, ZERO_QUALITY } from "../constants";
+import {IStrategy} from "../interfaces/strategy-interface";
+
+import {ZERO_QUALITY} from "../constants";
+import {isExpired} from "./Service";
 
 export class BackStage implements IStrategy {
-  sellIn: number;
-  quality: number;
+    sellIn: number;
+    quality: number;
 
-  constructor(sellIn: number, quality: number) {
-    this.sellIn = sellIn;
-    this.quality = quality;
-  }
-
-  updateQuality() {
-    if (this.sellIn <= LAST_DATE) {
-      return ZERO_QUALITY;
+    constructor(sellIn: number, quality: number) {
+        this.sellIn = sellIn;
+        this.quality = quality;
     }
 
-    if (this.sellIn <= 6) {
-      return this.quality + INCREASE.BY_THREE;
+    updateQuality() {
+        if (isExpired(this.sellIn)) {
+            return ZERO_QUALITY;
+        }
+
+        const quality = Math.min(this.quality, 50);
+
+        if (quality >= 50) {
+            return quality;
+        }
+
+        if (this.sellIn <= 5) {
+            return this.quality + 3;
+        }
+
+        if (this.sellIn <= 10) {
+            return this.quality + 2;
+        }
+
+        return this.quality + 1;
     }
 
-    if (this.sellIn <= 11) {
-      return this.quality + INCREASE.BY_TWO;
+    updateSellIn() {
+        return this.sellIn - 1;
     }
-
-    if (this.sellIn > 11) {
-      return this.quality + INCREASE.BY_ONE;
-    }
-  }
-
-  updateSellIn() {
-    return this.sellIn - DECREASE.BY_ONE;
-  }
 }

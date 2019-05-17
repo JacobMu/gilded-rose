@@ -1,27 +1,27 @@
-import { IStrategy } from "../interfaces/strategy-interface";
-import { ZERO_QUALITY, DECREASE } from "../constants";
+import {IStrategy} from "../interfaces/strategy-interface";
+import {isExpired} from "./Service";
 
 export class Default implements IStrategy {
-  sellIn: number;
-  quality: number;
+    sellIn: number;
+    quality: number;
 
-  constructor(sellIn: number, quality: number) {
-    this.sellIn = sellIn;
-    this.quality = quality;
-  }
-
-  updateQuality() {
-    if (this.quality <= ZERO_QUALITY) {
-      return ZERO_QUALITY;
+    constructor(sellIn: number, quality: number) {
+        this.sellIn = sellIn;
+        this.quality = quality;
     }
-    
-    if (this.sellIn <= 0) {
-      return this.quality - DECREASE.BY_TWO;
-    }
-    return this.quality - DECREASE.BY_ONE;
-  }
 
-  updateSellIn() {
-    return this.sellIn - DECREASE.BY_ONE;
-  }
+    updateQuality() {
+        const quality = Math.min(this.quality, 50);
+
+        if (isExpired(this.sellIn)) {
+            return quality - 2;
+        }
+
+        return quality - 1;
+
+    }
+
+    updateSellIn() {
+        return this.sellIn - 1;
+    }
 }
