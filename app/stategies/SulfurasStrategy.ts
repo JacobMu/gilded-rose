@@ -10,10 +10,10 @@ export class Sulfuras implements IStrategy {
   }
 
   updateQuality() {
-    return this.quality;
+    return Math.min(this.quality, 50);
   }
 
   updateSellIn() {
-    return this.sellIn - 1;
+    return this.sellIn;
   }
 }

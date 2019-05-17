@@ -1,31 +1,30 @@
-import { IStrategy } from "../interfaces/strategy-interface";
-import { MAX_QUALITY, LAST_DATE, INCREASE, DECREASE } from "../constants";
+import {IStrategy} from "../interfaces/strategy-interface";
+import {isExpired} from "./Service";
 
 export class AgedBrie implements IStrategy {
-  sellIn: number;
-  quality: number;
+    sellIn: number;
+    quality: number;
 
-  constructor(sellIn: number, quality: number) {
-    this.sellIn = sellIn;
-    this.quality = quality;
-  }
-
-  updateQuality() {
-    if (this.quality <= MAX_QUALITY) {
-      return getUpdatedQuality(this.sellIn, this.quality);
+    constructor(sellIn: number, quality: number) {
+        this.sellIn = sellIn;
+        this.quality = quality;
     }
-    return this.quality;
-  }
 
-  updateSellIn() {
-    return this.sellIn - DECREASE.BY_ONE;
-  }
-}
+    updateQuality() {
+        const quality = Math.min(this.quality, 50);
 
-function getUpdatedQuality(sellIn: number, quality: number): number {
-  if (sellIn >= LAST_DATE) {
-    return quality + INCREASE.BY_ONE;
-  }
+        if (quality >= 50) {
+            return quality;
+        }
 
-  return quality + INCREASE.BY_TWO;
+        if (isExpired(this.sellIn)) {
+            return quality + 2;
+        }
+
+        return quality + 1;
+    }
+
+    updateSellIn() {
+        return this.sellIn - 1;
+    }
 }
