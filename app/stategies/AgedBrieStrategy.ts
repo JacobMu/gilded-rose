@@ -1,7 +1,7 @@
 import {StrategyInterface} from "../interfaces/StrategyInterface";
 import {isExpired} from "./Service";
 
-import {MAX_QUALITY} from "../Constants";
+import {AGED_BRIE, QUALITY_THRESHOLD} from "../Constants";
 
 export class AgedBrie implements StrategyInterface {
     sellIn: number;
@@ -13,20 +13,19 @@ export class AgedBrie implements StrategyInterface {
     }
 
     getUpdatedQuality() {
-        const quality = Math.min(this.quality, MAX_QUALITY);
+        const quality = Math.min(this.quality, QUALITY_THRESHOLD);
 
-        if (quality >= MAX_QUALITY) {
+        if (quality >= QUALITY_THRESHOLD) {
             return quality;
         }
 
-        if (isExpired(this.sellIn)) {
-            return quality + 2;
+        if (!isExpired(this.sellIn)) {
+            return quality + AGED_BRIE.INCREASE_QUALITY_BY.ONE;
         }
-
-        return quality + 1;
+        return quality + AGED_BRIE.INCREASE_QUALITY_BY.TWO;
     }
 
     getUpdatedSellIn() {
-        return this.sellIn - 1;
+        return this.sellIn - AGED_BRIE.DECREASE_SELL_IN_BY.ONE;
     }
 }

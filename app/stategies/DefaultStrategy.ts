@@ -1,7 +1,7 @@
 import {StrategyInterface} from "../interfaces/StrategyInterface";
 import {isExpired} from "./Service";
 
-import {MAX_QUALITY} from "../Constants";
+import {DEFAULT, QUALITY_THRESHOLD} from "../Constants";
 
 export class Default implements StrategyInterface {
     sellIn: number;
@@ -13,17 +13,16 @@ export class Default implements StrategyInterface {
     }
 
     getUpdatedQuality() {
-        const quality = Math.min(this.quality, MAX_QUALITY);
-
+        const quality = Math.min(this.quality, QUALITY_THRESHOLD);
         if (isExpired(this.sellIn)) {
-            return quality - 2;
+            return quality - DEFAULT.DECREASE_QUALITY_BY.TWO;
         }
 
-        return quality - 1;
+        return quality - DEFAULT.DECREASE_QUALITY_BY.ONE;
 
     }
 
     getUpdatedSellIn() {
-        return this.sellIn - 1;
+        return this.sellIn - DEFAULT.DECREASE_SELL_IN_BY.ONE;
     }
 }

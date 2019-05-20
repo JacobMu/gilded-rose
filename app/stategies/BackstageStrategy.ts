@@ -1,6 +1,6 @@
 import {StrategyInterface} from "../interfaces/StrategyInterface";
 
-import {ZERO_QUALITY, MAX_QUALITY} from "../Constants";
+import {ZERO_QUALITY, QUALITY_THRESHOLD, BACKSTAGE} from "../Constants";
 import {isExpired} from "./Service";
 
 export class BackStage implements StrategyInterface {
@@ -17,24 +17,24 @@ export class BackStage implements StrategyInterface {
             return ZERO_QUALITY;
         }
 
-        const quality = Math.min(this.quality, MAX_QUALITY);
+        const quality = Math.min(this.quality, QUALITY_THRESHOLD);
 
-        if (quality >= MAX_QUALITY) {
+        if (quality >= QUALITY_THRESHOLD) {
             return quality;
         }
 
         if (this.sellIn <= 5) {
-            return this.quality + 3;
+            return this.quality + BACKSTAGE.INCREASE_QUALITY_BY.THREE;
         }
 
         if (this.sellIn <= 10) {
-            return this.quality + 2;
+            return this.quality + BACKSTAGE.INCREASE_QUALITY_BY.TWO;
         }
 
-        return this.quality + 1;
+        return this.quality + BACKSTAGE.INCREASE_QUALITY_BY.ONE;
     }
 
     getUpdatedSellIn(): number {
-        return this.sellIn - 1;
+        return this.sellIn - BACKSTAGE.DECREASE_SELL_IN_BY.ONE;
     }
 }
