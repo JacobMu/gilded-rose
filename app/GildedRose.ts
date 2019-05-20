@@ -31,3 +31,4 @@ export class GildedRose {
         item.quality = strategy.getUpdatedQuality();
         item.sellIn = strategy.getUpdatedSellIn();
     }
+}
