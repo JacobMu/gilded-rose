@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {Item, GildedRose} from "../app/gilded-rose";
+import {Item, GildedRose} from "../app/GildedRose";
 
 const SELL_IN_ZERO = 0;
 const SELL_IN_ONE = 1;
@@ -39,7 +39,7 @@ describe("GildedRose", function () {
             expect(items).to.be.instanceOf(Array);
         });
     });
-    describe('#updateQuality', function () {
+    describe('#getUpdatedQuality', function () {
         describe("Default Item", () => {
             it("does not change the name of the item", function () {
                 const gildedRose = getShopWithDefaultItem(1, 2);
@@ -116,7 +116,7 @@ describe("GildedRose", function () {
             });
         });
         describe("Backstage Passes Item", () => {
-            it("increases quality by 1 when sellIn >= 11 days", () => {
+            it("increases quality by 1 when sellIn > 11 days", () => {
                 const gildedRose = getShowWithBackStagePasses(SELL_IN_ELEVEN, QUALITY_ONE);
 
                 const items = gildedRose.updateQuality();
@@ -124,7 +124,7 @@ describe("GildedRose", function () {
                 expect(items[0].quality).to.equal(2);
             });
 
-            it("increases quality by 2 when sellIn <= 10 days", () => {
+            it("increases quality by 2 when sellIn <= 11 days", () => {
                 const gildedRose = getShowWithBackStagePasses(SELL_IN_TEN, QUALITY_ONE);
 
                 const items = gildedRose.updateQuality();
@@ -132,7 +132,7 @@ describe("GildedRose", function () {
                 expect(items[0].quality).to.equal(3);
             });
 
-            it("increases quality by 3 when sellIn <= 5 days", () => {
+            it("increases quality by 3 when sellIn <= 6 days", () => {
                 const gildedRose = getShowWithBackStagePasses(SELL_IN_FIVE, QUALITY_ONE);
 
                 const items = gildedRose.updateQuality();
