@@ -1,9 +1,9 @@
-import {IStrategy} from "../interfaces/strategy-interface";
+import {StrategyInterface} from "../interfaces/StrategyInterface";
 
-import {ZERO_QUALITY} from "../constants";
+import {ZERO_QUALITY, MAX_QUALITY} from "../Constants";
 import {isExpired} from "./Service";
 
-export class BackStage implements IStrategy {
+export class BackStage implements StrategyInterface {
     sellIn: number;
     quality: number;
 
@@ -12,14 +12,14 @@ export class BackStage implements IStrategy {
         this.quality = quality;
     }
 
-    updateQuality() {
+    getUpdatedQuality(): number {
         if (isExpired(this.sellIn)) {
             return ZERO_QUALITY;
         }
 
-        const quality = Math.min(this.quality, 50);
+        const quality = Math.min(this.quality, MAX_QUALITY);
 
-        if (quality >= 50) {
+        if (quality >= MAX_QUALITY) {
             return quality;
         }
 
@@ -34,7 +34,7 @@ export class BackStage implements IStrategy {
         return this.quality + 1;
     }
 
-    updateSellIn() {
+    getUpdatedSellIn(): number {
         return this.sellIn - 1;
     }
 }

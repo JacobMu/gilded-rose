@@ -1,6 +1,7 @@
-import { IStrategy } from "../interfaces/strategy-interface";
+import { StrategyInterface } from "../interfaces/StrategyInterface";
+import {MAX_QUALITY} from "../Constants";
 
-export class Sulfuras implements IStrategy {
+export class Sulfuras implements StrategyInterface {
   sellIn: number;
   quality: number;
 
@@ -9,11 +10,11 @@ export class Sulfuras implements IStrategy {
     this.quality = quality;
   }
 
-  updateQuality() {
-    return Math.min(this.quality, 50);
+  getUpdatedQuality() {
+    return Math.min(this.quality, MAX_QUALITY);
   }
 
-  updateSellIn() {
+  getUpdatedSellIn() {
     return this.sellIn;
   }
 }
