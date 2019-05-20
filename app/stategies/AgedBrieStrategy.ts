@@ -1,7 +1,9 @@
-import {IStrategy} from "../interfaces/strategy-interface";
+import {StrategyInterface} from "../interfaces/StrategyInterface";
 import {isExpired} from "./Service";
 
-export class AgedBrie implements IStrategy {
+import {MAX_QUALITY} from "../Constants";
+
+export class AgedBrie implements StrategyInterface {
     sellIn: number;
     quality: number;
 
@@ -10,10 +12,10 @@ export class AgedBrie implements IStrategy {
         this.quality = quality;
     }
 
-    updateQuality() {
-        const quality = Math.min(this.quality, 50);
+    getUpdatedQuality() {
+        const quality = Math.min(this.quality, MAX_QUALITY);
 
-        if (quality >= 50) {
+        if (quality >= MAX_QUALITY) {
             return quality;
         }
 
@@ -24,7 +26,7 @@ export class AgedBrie implements IStrategy {
         return quality + 1;
     }
 
-    updateSellIn() {
+    getUpdatedSellIn() {
         return this.sellIn - 1;
     }
 }
