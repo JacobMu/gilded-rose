@@ -17,6 +17,6 @@ const ItemStrategyMap = {
     [ItemNames.BackStage]: BackStage
 };
 
-export function getUpdatedItem(item: Item) {
+export function getStrategy(item: Item) {
     return ItemStrategyMap[item.name] || Default;
 }

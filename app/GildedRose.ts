@@ -1,4 +1,4 @@
-import {getUpdatedItem} from "./Index";
+import {getStrategy} from "./Index";
 import {StrategyInterface} from "./interfaces/StrategyInterface";
 
 export class Item {
@@ -26,10 +26,8 @@ export class GildedRose {
     }
 
     updateItem(item: Item) {
-        const updatedItem = getUpdatedItem(item);
-        const strategy: StrategyInterface = new updatedItem(item.sellIn, item.quality);
+        const strategy: StrategyInterface = new (getStrategy(item))(item.sellIn, item.quality);
 
         item.quality = strategy.getUpdatedQuality();
         item.sellIn = strategy.getUpdatedSellIn();
     }
-}
