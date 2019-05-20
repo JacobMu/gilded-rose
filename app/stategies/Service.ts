@@ -1,5 +1,5 @@
-import {SELL_BY} from "../Constants";
+import {MINIMUM_SELL_IN} from "../Constants";
 
 export function isExpired(sellIn: number): boolean {
-    return sellIn <= SELL_BY;
+    return sellIn <= MINIMUM_SELL_IN;
 }

@@ -1,5 +1,5 @@
 import { StrategyInterface } from "../interfaces/StrategyInterface";
-import {MAX_QUALITY} from "../Constants";
+import {QUALITY_THRESHOLD} from "../Constants";
 
 export class Sulfuras implements StrategyInterface {
   sellIn: number;
@@ -11,7 +11,7 @@ export class Sulfuras implements StrategyInterface {
   }
 
   getUpdatedQuality() {
-    return Math.min(this.quality, MAX_QUALITY);
+    return Math.min(this.quality, QUALITY_THRESHOLD);
   }
 
   getUpdatedSellIn() {
