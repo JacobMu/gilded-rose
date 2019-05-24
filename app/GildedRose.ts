@@ -1,22 +1,12 @@
-import {getStrategy} from "./Index";
-import {StrategyInterface} from "./interfaces/StrategyInterface";
-
-export class Item {
-    name: string;
-    sellIn: number;
-    quality: number;
-
-    constructor(name, sellIn, quality) {
-        this.name = name;
-        this.sellIn = sellIn;
-        this.quality = quality;
-    }
-}
+import {Item} from "./Item";
+import {IUpdaterFactory} from "./strategies/IUpdaterFactory";
 
 export class GildedRose {
     items: Array<Item>;
+    updaterFactory: IUpdaterFactory;
 
-    constructor(items = [] as Array<Item>) {
+    constructor(items = [] as Array<Item>, updaterFactory: IUpdaterFactory) {
+        this.updaterFactory = updaterFactory;
         this.items = items;
     }
 
@@ -25,10 +15,9 @@ export class GildedRose {
         return this.items;
     }
 
-    updateItem(item: Item) {
-        const strategy: StrategyInterface = new (getStrategy(item))(item.sellIn, item.quality);
+    updateItem(item) {
+        const updater = this.updaterFactory.getUpdaterFor(item);
 
-        item.quality = strategy.getUpdatedQuality();
-        item.sellIn = strategy.getUpdatedSellIn();
+        updater.update(item);
     }
 }

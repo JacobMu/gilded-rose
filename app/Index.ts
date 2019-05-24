@@ -3,7 +3,7 @@ import {Sulfuras} from "./stategies/SulfurasStrategy";
 import {BackStage} from "./stategies/BackstageStrategy";
 import {Default} from "./stategies/DefaultStrategy";
 
-import {Item} from "./GildedRose";
+import {Item} from "./Item";
 
 enum ItemNames {
     AgedBrie = "Aged Brie",

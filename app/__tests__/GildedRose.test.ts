@@ -1,5 +1,11 @@
 import {expect} from "chai";
-import {Item, GildedRose} from "../app/GildedRose";
+import {GildedRose} from "../GildedRose";
+import {Item} from "../Item";
+import {UpdaterFactory} from "../strategies/UpdaterFactory";
+import {CheeseUpdater} from "../strategies/CheeseUpdater";
+import {BackstageUpdater} from "../strategies/BackstageUpdater";
+import {Sulfuras} from "../strategies/Sulfuras";
+import {DefaultUpdater} from "../strategies/DefaultUpdater";
 
 const SELL_IN_ZERO = 0;
 const SELL_IN_ONE = 1;
@@ -12,26 +18,35 @@ const QUALITY_MAX = 50;
 
 const ITEM_NAME_SULFURAS = "Sulfuras, Hand of Ragnaros";
 const ITEM_NAME_AGED_BRIE = "Aged Brie";
-const ITEM_NAME_BACKSTAGE = "Backstage passes to a TAFKAL80ETC concert";
-const ITEM_NAME_DEFAULT = "Default";
+const ITEM_NAME_BACKSTAGE = "BackstageUpdater passes to a TAFKAL80ETC concert";
+const ITEM_NAME_DEFAULT = "DefaultUpdater";
 
-const getShopWithDefaultItem =
-    (sellIn: number, quality: number) =>
-        new GildedRose([new Item(ITEM_NAME_DEFAULT, sellIn, quality)]);
+function getUpdaterFactory() {
+    return new UpdaterFactory([
+        new CheeseUpdater(),
+        new BackstageUpdater(),
+        new Sulfuras(),
+    ], new DefaultUpdater());
+}
+
+const getItemInArray = (name: string, sellIn: number, quality: number) => [new Item(name, sellIn, quality)];
+
+const getShopWithDefaultItem = (sellIn: number, quality: number) =>
+    new GildedRose(getItemInArray(ITEM_NAME_DEFAULT, sellIn, quality), getUpdaterFactory());
 
 const getShopWithSulfuras = (sellIn: number, quality: number) =>
-    new GildedRose([new Item(ITEM_NAME_SULFURAS, sellIn, quality)]);
+    new GildedRose(getItemInArray(ITEM_NAME_SULFURAS, sellIn, quality), getUpdaterFactory());
 
 const getShopWithAgedBrie = (sellIn: number, quality: number) =>
-    new GildedRose([new Item(ITEM_NAME_AGED_BRIE, sellIn, quality)]);
+    new GildedRose(getItemInArray(ITEM_NAME_AGED_BRIE, sellIn, quality), getUpdaterFactory());
 
 const getShowWithBackStagePasses = (sellIn: number, quality: number) =>
-    new GildedRose([new Item(ITEM_NAME_BACKSTAGE, sellIn, quality)]);
+    new GildedRose(getItemInArray(ITEM_NAME_BACKSTAGE, sellIn, quality), getUpdaterFactory());
 
 describe("GildedRose", function () {
     describe("#constructor", () => {
         it("sets item property to empty array when no argument is present", () => {
-            const gildedRose = new GildedRose();
+            const gildedRose = new GildedRose([], getUpdaterFactory());
 
             const items = gildedRose.updateQuality();
 
@@ -40,7 +55,7 @@ describe("GildedRose", function () {
         });
     });
     describe('#getUpdatedQuality', function () {
-        describe("Default Item", () => {
+        describe("DefaultUpdater Item", () => {
             it("does not change the name of the item", function () {
                 const gildedRose = getShopWithDefaultItem(1, 2);
 
@@ -115,7 +130,7 @@ describe("GildedRose", function () {
                 expect(items[0].quality).to.equal(50);
             });
         });
-        describe("Backstage Passes Item", () => {
+        describe("BackstageUpdater Passes Item", () => {
             it("increases quality by 1 when sellIn > 11 days", () => {
                 const gildedRose = getShowWithBackStagePasses(SELL_IN_ELEVEN, QUALITY_ONE);
 
